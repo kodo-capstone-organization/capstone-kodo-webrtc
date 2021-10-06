@@ -1,7 +1,5 @@
 package com.spring.kodowebrtc.handler;
 
-import com.google.gson.Gson;
-import com.spring.kodowebrtc.entity.SessionMessage;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -21,13 +19,7 @@ public class SocketHandler extends TextWebSocketHandler {
     @Override
     public void handleTextMessage(WebSocketSession session, TextMessage message) throws InterruptedException, IOException
     {
-        System.out.println("Number of Sessions: " + sessions.size());
-
-//        Gson gson = new Gson();
-//        SessionMessage sessionMessage = gson.fromJson(new String(message.getPayload().getBytes(), UTF_8), SessionMessage.class);
-
         String sessionId = (String) session.getAttributes().get("sessionId");
-        System.out.println("Inside handleTextMessage: " + sessionId);
 
         if (sessions.containsKey(sessionId))
         {
@@ -47,16 +39,17 @@ public class SocketHandler extends TextWebSocketHandler {
     public void afterConnectionEstablished(WebSocketSession session) throws Exception
     {
         String sessionId = (String) session.getAttributes().get("sessionId");
-        System.out.println("Inside afterConnectionEstablished: " + sessionId);
+
+        if (!sessions.containsKey(sessionId))
+        {
+            throw new Exception("Invalid session id");
+        }
 
         sessions.get(sessionId).add(session);
-
-        System.out.println(session);
     }
 
     public void addNewSessionId(String sessionId)
     {
         this.sessions.put(sessionId, new CopyOnWriteArrayList<>());
-        System.out.println(this.sessions);
     }
 }
