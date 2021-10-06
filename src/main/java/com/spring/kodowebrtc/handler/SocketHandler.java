@@ -27,6 +27,7 @@ public class SocketHandler extends TextWebSocketHandler {
 //        SessionMessage sessionMessage = gson.fromJson(new String(message.getPayload().getBytes(), UTF_8), SessionMessage.class);
 
         String sessionId = (String) session.getAttributes().get("sessionId");
+        System.out.println("Inside handleTextMessage: " + sessionId);
 
         if (sessions.containsKey(sessionId))
         {
@@ -46,6 +47,8 @@ public class SocketHandler extends TextWebSocketHandler {
     public void afterConnectionEstablished(WebSocketSession session) throws Exception
     {
         String sessionId = (String) session.getAttributes().get("sessionId");
+        System.out.println("Inside afterConnectionEstablished: " + sessionId);
+
         sessions.get(sessionId).add(session);
 
         System.out.println(session);

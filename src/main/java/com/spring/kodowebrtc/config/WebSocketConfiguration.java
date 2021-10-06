@@ -1,6 +1,7 @@
 package com.spring.kodowebrtc.config;
 
 import com.spring.kodowebrtc.handler.SocketHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.server.ServerHttpRequest;
@@ -19,11 +20,14 @@ import java.util.Map;
 
 @Configuration
 @EnableWebSocket
-public class WebSocketConfiguration implements WebSocketConfigurer {
+public class WebSocketConfiguration implements WebSocketConfigurer
+{
+    @Autowired
+    private SocketHandler socketHandler;
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(new SocketHandler(), "/socket/*")
+        registry.addHandler(socketHandler, "/socket/*")
                 .addInterceptors(sessionInterceptor())
                 .setAllowedOrigins("*");
     }
