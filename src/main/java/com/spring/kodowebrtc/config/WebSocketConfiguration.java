@@ -23,11 +23,13 @@ public class WebSocketConfiguration implements WebSocketConfigurer {
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(new SocketHandler(), "/socket").setAllowedOrigins("*");
+        registry.addHandler(new SocketHandler(), "/socket/*")
+                .addInterceptors(sessionInterceptor())
+                .setAllowedOrigins("*");
     }
 
     @Bean
-    public HandshakeInterceptor auctionInterceptor() {
+    public HandshakeInterceptor sessionInterceptor() {
         return new HandshakeInterceptor() {
             public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response,
                                            WebSocketHandler wsHandler, Map<String, Object> attributes) throws Exception {
