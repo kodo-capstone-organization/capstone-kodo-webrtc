@@ -19,7 +19,7 @@ public class SocketHandler extends TextWebSocketHandler {
 
         System.out.println("Number of Sessions: " + sessions.size());
         for (WebSocketSession webSocketSession : sessions) {
-            if (webSocketSession.isOpen() && !session.getId().equals(webSocketSession.getId())) {
+            if (webSocketSession.isOpen() && session.getId().equals(webSocketSession.getId())) {
                 webSocketSession.sendMessage(message);
             }
         }
