@@ -15,7 +15,8 @@ public class SocketHandler extends TextWebSocketHandler {
     List<WebSocketSession> sessions = new CopyOnWriteArrayList<>();
 
     @Override
-    public void handleTextMessage(WebSocketSession session, TextMessage message) throws InterruptedException, IOException {
+    public void handleTextMessage(WebSocketSession session, TextMessage message) throws InterruptedException, IOException
+    {
 
         System.out.println("Number of Sessions: " + sessions.size());
         for (WebSocketSession webSocketSession : sessions) {
@@ -26,8 +27,14 @@ public class SocketHandler extends TextWebSocketHandler {
     }
 
     @Override
-    public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+    public void afterConnectionEstablished(WebSocketSession session) throws Exception
+    {
         sessions.add(session);
         System.out.println(session);
+    }
+
+    public List<WebSocketSession> getAllSessions()
+    {
+        return this.sessions;
     }
 }
