@@ -15,8 +15,8 @@ public class SessionController
     @Autowired
     private SocketHandler socketHandler;
 
-    @GetMapping("/getUniqueSessionLink/{sessionName}")
-    public String getUniqueSessionLink(@PathVariable String sessionName)
+    @GetMapping("/createSession/{sessionName}")
+    public String createSession(@PathVariable String sessionName)
     {
         String salt = CryptographicHelper.generateRandomString(64);
         String sessionId = CryptographicHelper.getSHA256Digest(sessionName, salt);
