@@ -9,12 +9,13 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @Component
 public class InvitationHandler
 {
-    Map<Long, List<InvitedSessionResp>> userInvitations = Collections.synchronizedMap(new HashMap<>());
+    Map<Long, List<InvitedSessionResp>> userInvitations = new ConcurrentHashMap<>();
 
     public void addInvitationForInvitees(CreateSessionReq createSessionReq)
     {

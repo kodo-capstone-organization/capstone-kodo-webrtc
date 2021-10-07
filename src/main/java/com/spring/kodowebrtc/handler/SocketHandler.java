@@ -6,17 +6,16 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @Component
 public class SocketHandler extends TextWebSocketHandler
 {
 
-    Map<String, List<WebSocketSession>> sessions = Collections.synchronizedMap(new HashMap<>());
+    Map<String, List<WebSocketSession>> sessions = new ConcurrentHashMap<>();
 
     @Override
     public void handleTextMessage(WebSocketSession session, TextMessage message) throws InterruptedException, IOException
