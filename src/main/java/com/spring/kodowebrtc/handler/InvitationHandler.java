@@ -1,7 +1,6 @@
 package com.spring.kodowebrtc.handler;
 
 import com.spring.kodowebrtc.restentity.request.CreateSessionReq;
-import com.spring.kodowebrtc.restentity.request.UserInfoReq;
 import com.spring.kodowebrtc.restentity.response.InvitedSessionResp;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -19,21 +18,19 @@ public class InvitationHandler
 {
     Map<Long, List<InvitedSessionResp>> userInvitations = new ConcurrentHashMap<>();
 
-    public void addInvitationForInvitees(CreateSessionReq createSessionReq)
+    public void addInvitationForInvitees(CreateSessionReq createSessionReq, String generatedSessionId)
     {
-        for (UserInfoReq userInfo : createSessionReq.getInviteeInfos())
+        for (Long userId : createSessionReq.getInviteeIds())
         {
-            List<InvitedSessionResp> invitedSessionReps = userInvitations.getOrDefault(userInfo.getUserId(), new CopyOnWriteArrayList<>());
+            List<InvitedSessionResp> invitedSessionReps = userInvitations.getOrDefault(userId, new CopyOnWriteArrayList<>());
 
             InvitedSessionResp invitedSessionResp = new InvitedSessionResp();
-
-            invitedSessionResp.setHostId(createSessionReq.getCreatorInfo().getUserId());
-            invitedSessionResp.setSessionId(createSessionReq.getSessionId());
+            invitedSessionResp.setSessionId(generatedSessionId);
+            invitedSessionResp.setHostId(createSessionReq.getCreatorId());
             invitedSessionResp.setSessionName(createSessionReq.getSessionName());
-
             invitedSessionReps.add(invitedSessionResp);
 
-            userInvitations.put(userInfo.getUserId(), invitedSessionReps);
+            userInvitations.put(userId, invitedSessionReps);
         }
     }
 

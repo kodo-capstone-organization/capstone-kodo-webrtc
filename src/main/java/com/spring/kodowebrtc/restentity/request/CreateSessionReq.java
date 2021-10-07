@@ -5,29 +5,11 @@ import java.util.List;
 public class CreateSessionReq
 {
     private String sessionName;
-
-    private String sessionId;
-
-    private UserInfoReq creatorInfo;
-
-    private List<UserInfoReq> inviteeInfos;
+    private Boolean isPublic;
+    private Long creatorId;
+    private List<Long> inviteeIds;
 
     public CreateSessionReq() {
-    }
-
-    public CreateSessionReq(String sessionName, String sessionId, UserInfoReq creatorInfo, List<UserInfoReq> inviteeInfos) {
-        this.sessionName = sessionName;
-        this.sessionId = sessionId;
-        this.creatorInfo = creatorInfo;
-        this.inviteeInfos = inviteeInfos;
-    }
-
-    public String getSessionId() {
-        return sessionId;
-    }
-
-    public void setSessionId(String sessionId) {
-        this.sessionId = sessionId;
     }
 
     public String getSessionName() {
@@ -38,19 +20,27 @@ public class CreateSessionReq
         this.sessionName = sessionName;
     }
 
-    public UserInfoReq getCreatorInfo() {
-        return creatorInfo;
+    public Long getCreatorId() {
+        return creatorId;
     }
 
-    public void setCreatorInfo(UserInfoReq creatorInfo) {
-        this.creatorInfo = creatorInfo;
+    public void setCreatorId(Long creatorId) {
+        this.creatorId = creatorId;
     }
 
-    public List<UserInfoReq> getInviteeInfos() {
-        return inviteeInfos;
+    public List<Long> getInviteeIds() {
+        return inviteeIds;
     }
 
-    public void setInviteeInfos(List<UserInfoReq> inviteeInfos) {
-        this.inviteeInfos = inviteeInfos;
+    public void setInviteeIds(List<Long> inviteeIds) {
+        this.inviteeIds = inviteeIds;
+    }
+
+    public Boolean getIsPublic() {
+        return isPublic;
+    }
+
+    public void setIsPublic(Boolean aPublic) {
+        isPublic = aPublic;
     }
 }

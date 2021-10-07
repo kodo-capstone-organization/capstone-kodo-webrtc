@@ -27,7 +27,12 @@ public class SessionController
         String sessionId = CryptographicHelper.getSHA256Digest(createSessionReq.getSessionName(), salt);
 
         this.socketHandler.addNewSessionId(sessionId);
-        this.invitationHandler.addInvitationForInvitees(createSessionReq);
+
+        // TODO: find a way to track if a session is public or not
+        if (!createSessionReq.getIsPublic())
+        {
+            this.invitationHandler.addInvitationForInvitees(createSessionReq, sessionId);
+        }
 
         return sessionId;
     }
