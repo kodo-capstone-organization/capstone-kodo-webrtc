@@ -1,12 +1,10 @@
 package com.spring.kodowebrtc.controller;
 
 import com.spring.kodowebrtc.handler.SocketHandler;
+import com.spring.kodowebrtc.restentity.request.CreateSessionReq;
 import com.spring.kodowebrtc.util.CryptographicHelper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "/session")
@@ -15,11 +13,11 @@ public class SessionController
     @Autowired
     private SocketHandler socketHandler;
 
-    @GetMapping("/createSession/{sessionName}")
-    public String createSession(@PathVariable String sessionName)
+    @PostMapping("/createSession")
+    public String createSession(@RequestPart(name = "createSessionReq", required = true) CreateSessionReq createSessionReq)
     {
         String salt = CryptographicHelper.generateRandomString(64);
-        String sessionId = CryptographicHelper.getSHA256Digest(sessionName, salt);
+        String sessionId = CryptographicHelper.getSHA256Digest(createSessionReq.getSessionName(), salt);
 
         socketHandler.addNewSessionId(sessionId);
 
