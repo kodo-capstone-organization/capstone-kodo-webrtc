@@ -13,7 +13,8 @@ import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @Component
-public class SocketHandler extends TextWebSocketHandler {
+public class SocketHandler extends TextWebSocketHandler
+{
 
     Map<String, List<WebSocketSession>> sessions = Collections.synchronizedMap(new HashMap<>());
 
@@ -24,8 +25,10 @@ public class SocketHandler extends TextWebSocketHandler {
 
         if (sessions.containsKey(sessionId))
         {
-            for (WebSocketSession webSocketSession : sessions.get(sessionId)) {
-                if (webSocketSession.isOpen() && !session.getId().equals(webSocketSession.getId())) {
+            for (WebSocketSession webSocketSession : sessions.get(sessionId))
+            {
+                if (webSocketSession.isOpen() && !session.getId().equals(webSocketSession.getId()))
+                {
                     webSocketSession.sendMessage(message);
                 }
             }
