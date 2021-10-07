@@ -37,4 +37,11 @@ public class SessionController
     {
         return invitationHandler.getInvitedSessionRespForUser(userId);
     }
+
+    @DeleteMapping("/endSession/{sessionId}")
+    public void endSession(@PathVariable(name = "sessionId", required = true) String sessionId)
+    {
+        this.socketHandler.deleteSessionId(sessionId);
+        this.invitationHandler.deleteInvitationsBySessionId(sessionId);
+    }
 }

@@ -56,4 +56,9 @@ public class SocketHandler extends TextWebSocketHandler
     {
         this.sessions.put(sessionId, new CopyOnWriteArrayList<>());
     }
+
+    public void deleteSessionId(String sessionId)
+    {
+        this.sessions.remove(sessionId);
+    }
 }

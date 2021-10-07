@@ -38,4 +38,22 @@ public class InvitationHandler
     {
         return userInvitations.getOrDefault(inviteeId, new CopyOnWriteArrayList<>());
     }
+
+    public void deleteInvitationsBySessionId(String sessionId)
+    {
+        Map<Long, List<InvitedSessionResp>> updatedUserInvitations = Collections.synchronizedMap(new HashMap<>());
+        for (Map.Entry<Long, List<InvitedSessionResp>> entry : userInvitations.entrySet())
+        {
+            List<InvitedSessionResp> updatedSessionResps = new CopyOnWriteArrayList<>();
+            for (InvitedSessionResp invitedSessionResp : entry.getValue())
+            {
+                if (!invitedSessionResp.getSessionId().equals(sessionId))
+                {
+                    updatedSessionResps.add(invitedSessionResp);
+                }
+            }
+            updatedUserInvitations.put(entry.getKey(), updatedSessionResps);
+        }
+        userInvitations = updatedUserInvitations;
+    }
 }
