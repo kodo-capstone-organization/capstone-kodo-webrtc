@@ -1,5 +1,11 @@
 package com.spring.kodowebrtc.restentity.response;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.apache.tomcat.jni.Local;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 public class InvitedSessionResp
 {
     private String sessionName;
@@ -8,7 +14,11 @@ public class InvitedSessionResp
 
     private Long hostId;
 
+    @JsonIgnore
+    private LocalDateTime dateTimeOfSessionCreation;
+
     public InvitedSessionResp() {
+        dateTimeOfSessionCreation = LocalDateTime.now();
     }
 
     public InvitedSessionResp(String sessionName, String sessionId, Long hostId) {
@@ -39,5 +49,13 @@ public class InvitedSessionResp
 
     public void setHostId(Long hostId) {
         this.hostId = hostId;
+    }
+
+    public LocalDateTime getDateTimeOfSessionCreation() {
+        return dateTimeOfSessionCreation;
+    }
+
+    public void setDateTimeOfSessionCreation(LocalDateTime dateTimeOfSessionCreation) {
+        this.dateTimeOfSessionCreation = dateTimeOfSessionCreation;
     }
 }
