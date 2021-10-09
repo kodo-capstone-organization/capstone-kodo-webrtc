@@ -42,7 +42,7 @@ public class SessionController
         return sessionId;
     }
 
-    @GetMapping("getSessionBySessionId/{sessionId}&{userId}")
+    @GetMapping("/getSessionBySessionId/{sessionId}&{userId}")
     public InvitedSessionResp getSessionBySessionId(@PathVariable(name="sessionId", required=true) String sessionId, @PathVariable(name="userId", required=true) Long userId)
     {
         if (socketHandler.checkHasWebSocketSession(sessionId))
@@ -76,6 +76,6 @@ public class SessionController
     public void endSession(@PathVariable(name = "sessionId", required = true) String sessionId)
     {
         this.socketHandler.deleteSessionId(sessionId);
-        this.invitationHandler.deleteInvitationsBySessionId(sessionId); // handles deletion of public and private sessions 
+        this.invitationHandler.deleteInvitationsBySessionId(sessionId); // handles deletion of public and private sessions
     }
 }
