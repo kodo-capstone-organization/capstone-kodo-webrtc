@@ -6,7 +6,9 @@ import com.spring.kodowebrtc.restentity.request.CreateSessionReq;
 import com.spring.kodowebrtc.restentity.response.InvitedSessionResp;
 import com.spring.kodowebrtc.util.CryptographicHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -28,13 +30,40 @@ public class SessionController
 
         this.socketHandler.addNewSessionId(sessionId);
 
-        // TODO: find a way to track if a session is public or not
         if (!createSessionReq.getIsPublic())
         {
             this.invitationHandler.addInvitationForInvitees(createSessionReq, sessionId);
         }
+        else
+        {
+            this.invitationHandler.addNewPublicSession(createSessionReq, sessionId);
+        }
 
         return sessionId;
+    }
+
+    @GetMapping("getSessionBySessionId/{sessionId}&{userId}")
+    public InvitedSessionResp getSessionBySessionId(@PathVariable(name="sessionId", required=true) String sessionId, @PathVariable(name="userId", required=true) Long userId)
+    {
+        if (socketHandler.checkHasWebSocketSession(sessionId))
+        {
+            if (invitationHandler.isUserInvited(sessionId, userId))
+            {
+                return invitationHandler.getInvitedSession(sessionId, userId);
+            }
+            else if (invitationHandler.isSessionPublic(sessionId))
+            {
+                return invitationHandler.getPublicSession(sessionId);
+            }
+            else
+            {
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not invited to this session");
+            }
+        }
+        else
+        {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No such session found");
+        }
     }
 
     @GetMapping("/getInvitedSessions/{userId}")
@@ -47,6 +76,6 @@ public class SessionController
     public void endSession(@PathVariable(name = "sessionId", required = true) String sessionId)
     {
         this.socketHandler.deleteSessionId(sessionId);
-        this.invitationHandler.deleteInvitationsBySessionId(sessionId);
+        this.invitationHandler.deleteInvitationsBySessionId(sessionId); // handles deletion of public and private sessions 
     }
 }
