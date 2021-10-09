@@ -22,16 +22,21 @@ public class InvitationHandler
 
     public void addInvitationForInvitees(CreateSessionReq createSessionReq, String generatedSessionId)
     {
-        for (Long userId : createSessionReq.getInviteeIds())
+        // Create invitation resp
+        InvitedSessionResp invitedSessionResp = new InvitedSessionResp();
+        invitedSessionResp.setSessionId(generatedSessionId);
+        invitedSessionResp.setHostId(createSessionReq.getCreatorId());
+        invitedSessionResp.setSessionName(createSessionReq.getSessionName());
+
+        // Add creator into invitee list
+        List<Long> userIds = createSessionReq.getInviteeIds();
+        userIds.add(createSessionReq.getCreatorId());
+
+        // Update invitation for all userids
+        for (Long userId : userIds)
         {
             List<InvitedSessionResp> invitedSessionReps = userInvitations.getOrDefault(userId, new CopyOnWriteArrayList<>());
-
-            InvitedSessionResp invitedSessionResp = new InvitedSessionResp();
-            invitedSessionResp.setSessionId(generatedSessionId);
-            invitedSessionResp.setHostId(createSessionReq.getCreatorId());
-            invitedSessionResp.setSessionName(createSessionReq.getSessionName());
             invitedSessionReps.add(invitedSessionResp);
-
             userInvitations.put(userId, invitedSessionReps);
         }
     }
