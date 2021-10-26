@@ -16,7 +16,7 @@ import java.util.Map;
 
 @Configuration
 @EnableWebSocket
-public class WebSocketConfiguration implements WebSocketConfigurer
+public class WebSocketConfig implements WebSocketConfigurer
 {
     @Autowired
     private SocketHandler socketHandler;
