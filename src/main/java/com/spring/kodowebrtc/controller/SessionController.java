@@ -5,6 +5,7 @@ import com.spring.kodowebrtc.handler.SocketHandler;
 import com.spring.kodowebrtc.restentity.request.CreateSessionReq;
 import com.spring.kodowebrtc.restentity.response.InvitedSessionResp;
 import com.spring.kodowebrtc.util.CryptographicHelper;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -25,8 +26,8 @@ public class SessionController
     @PostMapping("/createSession")
     public String createSession(@RequestPart(name = "createSessionReq", required = true) CreateSessionReq createSessionReq)
     {
-        String salt = CryptographicHelper.generateRandomString(64);
-        String sessionId = CryptographicHelper.getSHA256Digest(createSessionReq.getSessionName(), salt);
+        String randomGeneratedValue = RandomStringUtils.randomNumeric(10);
+        String sessionId = randomGeneratedValue.substring(0, 3) + " " + randomGeneratedValue.substring(3, 6) + " " + randomGeneratedValue.substring(6);
 
         this.socketHandler.addNewSessionId(sessionId);
 
