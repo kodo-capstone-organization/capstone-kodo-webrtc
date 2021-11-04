@@ -4,7 +4,6 @@ import com.spring.kodowebrtc.handler.InvitationHandler;
 import com.spring.kodowebrtc.handler.SocketHandler;
 import com.spring.kodowebrtc.restentity.request.CreateSessionReq;
 import com.spring.kodowebrtc.restentity.response.InvitedSessionResp;
-import com.spring.kodowebrtc.util.CryptographicHelper;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
